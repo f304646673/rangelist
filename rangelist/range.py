@@ -22,7 +22,7 @@ class Range(object):
             raise TypeError("start and end must be integers")
         if start > 2**32 or end > 2**32:
             raise OverflowError("start and end must be <= 2**32")
-        if start >= end:
+        if start > end:
             raise ValueError("start must be < end")
         
         self.start = start
@@ -85,7 +85,7 @@ class Range(object):
         if self.start < other.start and self.end <= other.end:
             return Range(self.start, other.end)
         if self.start < other.start and self.end > other.end:
-            return Range(self.start, self.start)
+            return Range(self.start, self.end)
         
     # convert other to a Range object.For example, [1, 5) is a Range object, [1, 5] is a list of 2 integers.
     # @param other - a Range object or a list of integers

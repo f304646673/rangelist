@@ -38,7 +38,8 @@ class TestRange(unittest.TestCase):
     # test Range start equal end, it will raise execption "start must be < end"
     def test_init(self):
         with self.assertRaises(ValueError) as ve:
-            start = end = 3
+            start = 3
+            end = 2
             Range(start, end)
         self.assertEqual(str(ve.exception), "start must be < end")
         
@@ -84,198 +85,205 @@ class TestRange(unittest.TestCase):
         
         
     def test_remove(self):
-        # test Range start less than other start, and Range end large than other end，it will raise execption
-        # original Range: [3, 5) other Range: [1, 2), raise execption "other range must be overlap with this range"
+        # test Range start less than right start, and Range end large than right end，it will raise execption
+        # left Range: [3, 5) right Range: [1, 2), raise execption "right range must be overlap with this range"
         with self.assertRaises(TypeError) as te:
             start = 3
             end = 5
-            originRange = Range(start, end)
-            originRange.remove("a")
+            left = Range(start, end)
+            left.remove("a")
         self.assertEqual(str(te.exception), "other must be a Range object or a list of integers")
         
-        # test Range start equal other start, it will return None
-        # original Range: [3, 5) other Range: [3, 5), result is None
+        # test Range start equal right start, it will return None
+        # left Range: [3, 5) right Range: [3, 5), result is None
         start = 3
         end = 5
-        originRange = Range(start, end)
-        removeRange = Range(start, end)
-        self.assertEqual(originRange.remove(removeRange), None)
+        left = Range(start, end)
+        right = Range(start, end)
+        self.assertEqual(left.remove(right), None)
         
-        # test Range start equal other end, it will return original Range
-        # original Range: [3, 5) other Range: [5, 6), result is [3, 5)
+        # test Range start equal right end, it will return left Range
+        # left Range: [3, 5) right Range: [5, 6), result is [3, 5)
         start = 3
         end = 5
-        originRange = Range(start, end)
-        removeRange = Range(end, end+1)
-        self.assertEqual(originRange.remove(removeRange), [originRange])
+        left = Range(start, end)
+        right = Range(end, end+1)
+        self.assertEqual(left.remove(right), [left])
         
-        # test Range end equal other start, it will return original Range
-        # original Range: [3, 5) other Range: [2, 3), result is [3, 5)
+        # test Range end equal right start, it will return left Range
+        # left Range: [3, 5) right Range: [2, 3), result is [3, 5)
         start = 3
         end = 5
-        originRange = Range(start, end)
-        removeRange = Range(start-1, start)
-        self.assertEqual(originRange.remove(removeRange), [originRange])
+        left = Range(start, end)
+        right = Range(start-1, start)
+        self.assertEqual(left.remove(right), [left])
         
-        # test Range end equal other end, it will return range(other.end, self.end-1)
-        # original Range: [3, 5) other Range: [4, 5), result is [3, 4)
+        # test Range end equal right end, it will return range(right.end, self.end-1)
+        # left Range: [3, 5) right Range: [4, 5), result is [3, 4)
         start = 3
         end = 5
-        originRange = Range(start, end)
-        removeRange = Range(end-1, end)
-        self.assertEqual(originRange.remove(removeRange), [Range(start, end-1)])
+        left = Range(start, end)
+        right = Range(end-1, end)
+        self.assertEqual(left.remove(right), [Range(start, end-1)])
         
-        # test Range start large than other start, and Range end less than other end, it will return None
-        # original Range: [3, 5) other Range: [2, 6), result is None
+        # test Range start large than right start, and Range end less than right end, it will return None
+        # left Range: [3, 5) right Range: [2, 6), result is None
         start = 3
         end = 5
-        originRange = Range(start, end)
-        removeRange = Range(start-1, end+1)
-        self.assertEqual(originRange.remove(removeRange), None)
+        left = Range(start, end)
+        right = Range(start-1, end+1)
+        self.assertEqual(left.remove(right), None)
         
-        # test Range start less than other start, and Range end large than other end, it will return a range list
-        # original Range: [1, 10) other Range: [3, 5), result is [[1, 3),[5, 10)]
+        # test Range start less than right start, and Range end large than right end, it will return a range list
+        # left Range: [1, 10) right Range: [3, 5), result is [[1, 3),[5, 10)]
         start = 1
         end = 10
-        originRange = Range(start, end)
-        removeRange = Range(start+2, start+4)
-        self.assertEqual(originRange.remove(removeRange), [Range(start, start+2), Range(start+4, end)])
+        left = Range(start, end)
+        right = Range(start+2, start+4)
+        self.assertEqual(left.remove(right), [Range(start, start+2), Range(start+4, end)])
         
-        # test Range start less than other start, and Range end equal other end, it will return a range list
-        # original Range: [3, 5) other Range: [1, 2), result is [3, 5)
+        # test Range start less than right start, and Range end equal right end, it will return a range list
+        # left Range: [3, 5) right Range: [1, 2), result is [3, 5)
         start = 3
         end = 5
-        originRange = Range(start, end)
-        removeRange = Range(start-2, start-1)
-        self.assertEqual(originRange.remove(removeRange), [originRange])
+        left = Range(start, end)
+        right = Range(start-2, start-1)
+        self.assertEqual(left.remove(right), [left])
         
-        # test Range start less than other start, and Range end equal other end, it will return a range list
-        # original Range: [3, 5) other Range: [6, 7), result is [3, 5)
+        # test Range start less than right start, and Range end equal right end, it will return a range list
+        # left Range: [3, 5) right Range: [6, 7), result is [3, 5)
         start = 3
         end = 5
-        originRange = Range(start, end)
-        removeRange = Range(end+1, end+2)
-        self.assertEqual(originRange.remove(removeRange), [originRange])
+        left = Range(start, end)
+        right = Range(end+1, end+2)
+        self.assertEqual(left.remove(right), [left])
         
     def test_add(self):      
-        # test Range start less than other start, and Range end large than other end，it will raise execption
-        # original Range: [3, 5) other Range: [1, 2), raise execption "other range must be overlap with this range"
+        # test Range start less than right start, and Range end large than right end，it will raise execption
+        # left Range: [3, 5) right Range: [1, 2), raise execption "right range must be overlap with this range"
         with self.assertRaises(ValueError) as ve:
             start = 3
             end = 5
-            originRange = Range(start, end)
-            originRange.add([start-2, start-1])
+            left = Range(start, end)
+            left.add([start-2, start-1])
         self.assertEqual(str(ve.exception), "other range must be overlap with this range")
         
-        # test Range start less than other start, and Range end equal other end, it will raise execption
-        # original Range: [3, 5) other Range: [6, 7), raise execption "other range must be overlap with this range"
+        # test Range start less than right start, and Range end equal right end, it will raise execption
+        # left Range: [3, 5) right Range: [6, 7), raise execption "right range must be overlap with this range"
         with self.assertRaises(ValueError) as ve:
             start = 3
             end = 5
-            originRange = Range(start, end)
-            originRange.add([end+1, end+2])
+            left = Range(start, end)
+            left.add([end+1, end+2])
         self.assertEqual(str(ve.exception), "other range must be overlap with this range")
         
         with self.assertRaises(TypeError) as te:
             start = 3
             end = 5
-            originRange = Range(start, end)
-            originRange.add("a")
+            left = Range(start, end)
+            left.add("a")
         self.assertEqual(str(te.exception), "other must be a Range object or a list of integers")
         
-        # test Range start equal other start, it will return original Range
-        # original Range: [3, 5) other Range: [3, 5), result is [3, 5)
+        # test Range start equal right start, it will return left Range
+        # left Range: [3, 5) right Range: [3, 5), result is [3, 5)
         start = 3
         end = 5
-        originRange = Range(start, end)
-        self.assertEqual(originRange.add([start, end]), originRange)
+        left = Range(start, end)
+        self.assertEqual(left.add([start, end]), left)
         
-        # test Range start equal other end, and Range end less than other end, it will return original Range(start, other.end)
-        # original Range: [3, 5) other Range: [5, 6), result is [3, 6)
-        start = 3
+        # test Range start equal right end, it will return left Range
+        # left Range: [3, 5) right Range: [5, 5), result is [3, 5)
+        start = 5
         end = 5
-        originRange = Range(start, end)
-        self.assertEqual(originRange.add([end, end+1]), Range(start, end+1))
+        left = Range(start, end)
+        self.assertEqual(left.add([start, end]), left)
         
-        # test Range end equal other start, it will return original Range
-        # original Range: [3, 5) other Range: [2, 3), result is [2, 5)
+        # test Range start equal right end, and Range end less than right end, it will return left Range(start, right.end)
+        # left Range: [3, 5) right Range: [5, 6), result is [3, 6)
         start = 3
         end = 5
-        originRange = Range(start, end)
-        self.assertEqual(originRange.add([start-1, start]), Range(start-1, end))
+        left = Range(start, end)
+        self.assertEqual(left.add([end, end+1]), Range(start, end+1))
         
-        # test Range end equal other end, it will return range(other.end, self.end-1)
-        # original Range: [3, 5) other Range: [4, 5), result is [3, 5)
+        # test Range end equal right start, it will return left Range
+        # left Range: [3, 5) right Range: [2, 3), result is [2, 5)
         start = 3
         end = 5
-        originRange = Range(start, end)
-        self.assertEqual(originRange.add([end-1, end]), originRange)
+        left = Range(start, end)
+        self.assertEqual(left.add([start-1, start]), Range(start-1, end))
         
-        # test Range start large than other start, and Range end less than other end, it will return None
-        # original Range: [3, 5) other Range: [2, 6), result is [2, 6)
+        # test Range end equal right end, it will return range(right.end, self.end-1)
+        # left Range: [3, 5) right Range: [4, 5), result is [3, 5)
         start = 3
         end = 5
-        originRange = Range(start, end)
-        self.assertEqual(originRange.add([start-1, end+1]), Range(start-1, end+1))
+        left = Range(start, end)
+        self.assertEqual(left.add([end-1, end]), left)
+        
+        # test Range start large than right start, and Range end less than right end, it will return None
+        # left Range: [3, 5) right Range: [2, 6), result is [2, 6)
+        start = 3
+        end = 5
+        left = Range(start, end)
+        self.assertEqual(left.add([start-1, end+1]), Range(start-1, end+1))
  
         
     def test_overlap(self):
-        # test Range start less than other start, and Range end large than other end，it will raise execption
-        # original Range: [3, 5) other Range: [1, 2), raise execption "other range must be overlap with this range"
+        # test Range start less than right start, and Range end large than right end，it will raise execption
+        # left Range: [3, 5) right Range: [1, 2), raise execption "right range must be overlap with this range"
         with self.assertRaises(TypeError) as te:
             start = 3
             end = 5
-            originRange = Range(start, end)
-            originRange.overlap("a")
+            left = Range(start, end)
+            left.overlap("a")
         self.assertEqual(str(te.exception), "other must be a Range object or a list of integers")
         
-        # test Range start equal other start, it will return True
-        # original Range: [3, 5) other Range: [3, 5), result is True
+        # test Range start equal right start, it will return True
+        # left Range: [3, 5) right Range: [3, 5), result is True
         start = 3
         end = 5
-        originRange = Range(start, end)
-        otherRange = Range(start, end)
-        self.assertEqual(originRange.overlap(otherRange), True)
+        left = Range(start, end)
+        right = Range(start, end)
+        self.assertEqual(left.overlap(right), True)
         
-        # test Range start equal other end, it will return False
-        # original Range: [3, 5) other Range: [5, 6), result is True
+        # test Range start equal right end, it will return False
+        # left Range: [3, 5) right Range: [5, 6), result is True
         start = 3
         end = 5
-        originRange = Range(start, end)
-        otherRange = Range(end, end+1)
-        self.assertEqual(originRange.overlap(otherRange), True)
+        left = Range(start, end)
+        right = Range(end, end+1)
+        self.assertEqual(left.overlap(right), True)
         
-        # test Range end equal other start, it will return False
-        # original Range: [3, 5) other Range: [2, 3), result is True
+        # test Range end equal right start, it will return False
+        # left Range: [3, 5) right Range: [2, 3), result is True
         start = 3
         end = 5
-        originRange = Range(start, end)
-        otherRange = Range(start-1, start)
-        self.assertEqual(originRange.overlap(otherRange), True)
+        left = Range(start, end)
+        right = Range(start-1, start)
+        self.assertEqual(left.overlap(right), True)
         
-        # test Range end equal other end, it will return True
-        # original Range: [3, 5) other Range: [4, 5), result is True
+        # test Range end equal right end, it will return True
+        # left Range: [3, 5) right Range: [4, 5), result is True
         start = 3
         end = 5
-        originRange = Range(start, end)
-        otherRange = Range(end-1, end)
-        self.assertEqual(originRange.overlap(otherRange), True)
+        left = Range(start, end)
+        right = Range(end-1, end)
+        self.assertEqual(left.overlap(right), True)
         
-        # test Range start large than other start, and Range end less than other end, it will return True
-        # original Range: [3, 5) other Range: [2, 6), result is True
+        # test Range start large than right start, and Range end less than right end, it will return True
+        # left Range: [3, 5) right Range: [2, 6), result is True
         start = 3
         end = 5
-        originRange = Range(start, end)
-        otherRange = Range(start-1, end+1)
-        self.assertEqual(originRange.overlap(otherRange), True)
+        left = Range(start, end)
+        right = Range(start-1, end+1)
+        self.assertEqual(left.overlap(right), True)
         
-        # test Range start less than other start, and Range end large than other end, it will return False
-        # original Range: [3, 5) other Range: [1, 2), result is False
+        # test Range start less than right start, and Range end large than right end, it will return False
+        # left Range: [3, 5) right Range: [1, 2), result is False
         start = 3
         end = 5
-        originRange = Range(start, end)
-        otherRange = Range(start-2, start-1)
-        self.assertEqual(originRange.overlap(otherRange), False)
+        left = Range(start, end)
+        right = Range(start-2, start-1)
+        self.assertEqual(left.overlap(right), False)
         
         
 if __name__ == '__main__':
