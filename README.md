@@ -122,7 +122,7 @@ rl.toString(); // Should be: "[1, 3) [19, 21)
         if self.start < other.start and self.end > other.end:
             return [Range(self.start, other.start), Range(other.end, self.end)]
 ```
-# Tools
+## Tools
 在设计完Range类后，我们还需要解决下面两个问题：
  * 被修正的区间有哪些
  * 需要调整位置的区间有哪些
@@ -193,10 +193,10 @@ search_overlap方法返回的数据如下：
 ```
 -1代表对比的区间（可能是新增或者删除）的起始值在第0个区间的左侧。
 True和False表示区间是否会调整（因为有覆盖）。
-# RangeList
+## RangeList
 RangeList用于保存一组Range序列。
 这题的解法也主要依赖于其add和remove方法。
-## add
+### add
 ```python
     # add a range to the list.For example, [[1, 5)] add [2, 3) is [[1, 5)].[[1, 5)] add [6, 8) is [[1, 5) [6, 8)].
     # @param other - the other range to compare with
@@ -224,7 +224,7 @@ RangeList用于保存一组Range序列。
 ```
 add方法会让一个Range不停“合并”被其覆盖的Range。然后删除被覆盖的Range，把新组合的Range插入到第一个覆盖的Range位置。
 如果没有覆盖的区间，则在适当的位置插入。
-## remove
+### remove
 
 ```python
 # remove the other range from this range.For example, [[1, 5) [10, 14)]] remove [2, 3) is [[1, 2) [3, 5) [10, 14)]].
