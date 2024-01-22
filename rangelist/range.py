@@ -55,8 +55,6 @@ class Range(object):
     # @throws ValueError if other is not a list of 2 integers
     def remove(self, other) -> object:
         other = self.conv(other)
-        if other.start == other.end:
-            return [self]
         
         if self.end < other.start or self.start > other.end:
             return [self]
@@ -77,8 +75,6 @@ class Range(object):
     # @throws TypeError if other range is not overlap with this range
     def add(self, other) -> object:
         other = self.conv(other)
-        if other.start == other.end:
-            return self
         
         if self.end < other.start or self.start > other.end:
             raise ValueError("other range must be overlap with this range")

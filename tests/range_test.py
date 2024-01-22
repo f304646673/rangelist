@@ -158,6 +158,14 @@ class TestRange(unittest.TestCase):
         right = Range(end+1, end+2)
         self.assertEqual(left.remove(right), [left])
         
+        # test Right start equal Range end and Right start, it will return Range(start, right.end)
+        # left Range: [3, 5) right Range: [5, 5), result is [3, 5)
+        start = 3
+        end = 5
+        left = Range(start, end)
+        right = Range(end, end)
+        self.assertEqual(left.remove(right), [left])
+        
     def test_add(self):      
         # test Range start less than right start, and Range end large than right end，it will raise execption
         # left Range: [3, 5) right Range: [1, 2), raise execption "right range must be overlap with this range"
@@ -225,6 +233,13 @@ class TestRange(unittest.TestCase):
         end = 5
         left = Range(start, end)
         self.assertEqual(left.add([start-1, end+1]), Range(start-1, end+1))
+        
+        # test Right start equal Range end and Right start, it will return Range(start, right.end)
+        # left Range: [3, 5) right Range: [5, 5), result is [3, 5)
+        start = 3
+        end = 5
+        left = Range(start, end)
+        self.assertEqual(left.add([end, end]), Range(start, end))
  
         
     def test_overlap(self):
