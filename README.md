@@ -65,7 +65,7 @@ rl.remove([3, 19]);
 rl.toString(); // Should be: "[1, 3) [19, 21)
 ```
 这题大体的意思是：设计一个RangeList类，它保存了一批左闭右开的区间。它支持add操作，可以新增一个包含区间，但是可能会影响之前的区间，比如之前的区间是：[3,5) [7,9)，新增区间[5,7)之后，区间就变成[3,9)；它还支持remove操作，可以删除一个区间，也可能影响之前的区间，比如之前的区间是[3,9)，删除[5,7)之后，变成[3,5) [7,9)。
-![在这里插入图片描述](https://img-blog.csdnimg.cn/direct/5edec9c4e2584207bcfd8b0ec6921328.png)
+![在这里插入图片描述](https://github.com/f304646673/rangelist/blob/main/images/1.png)
 
 还有一种特殊区间需要考虑，就是左右值相等的区间。比如[5,5)代表的是一个空区间。
 # 解法
@@ -73,7 +73,7 @@ rl.toString(); // Should be: "[1, 3) [19, 21)
 首先我们设计一个Range类，它只是单个区间。
 ### add
 如果对其进行add操作，即新增一个区间，则要考虑这两个区间是否相交。如果相交，则返回一个重新整合过的区间；如果不相交，则抛出异常。
-![在这里插入图片描述](https://img-blog.csdnimg.cn/direct/43cc245466e846e0a82f638f1a8f4892.png)
+![在这里插入图片描述](https://github.com/f304646673/rangelist/blob/main/images/2.png)
 
 
 ```python
@@ -100,7 +100,7 @@ rl.toString(); // Should be: "[1, 3) [19, 21)
 
 ### remove
 如果对其进行remove操作，即删除一个区间，也要考虑两个区间相交的情况。如果相交，则返回一个Range数组，其中可能0~2个区间。
-![在这里插入图片描述](https://img-blog.csdnimg.cn/direct/09f78849fcdc4e3b960e3ee4b8b50a6e.png)
+![在这里插入图片描述](https://github.com/f304646673/rangelist/blob/main/images/3.png)
 
 ```python
     # remove the other range from this range.For example, [1, 5) remove [2, 3) is [1, 2) [3, 5).
@@ -126,7 +126,7 @@ rl.toString(); // Should be: "[1, 3) [19, 21)
 在设计完Range类后，我们还需要解决下面两个问题：
  * 被修正的区间有哪些
  * 需要调整位置的区间有哪些
-![在这里插入图片描述](https://img-blog.csdnimg.cn/direct/81cc606c629d4cfea94a6f19c61f6505.png)
+![在这里插入图片描述](https://github.com/f304646673/rangelist/blob/main/images/4.png)
 上图中标红的表示可能要调整区间的区域。
 对于没有没有需要调整的区域，则要找到临近的区域。比如上图中第一组中，[7,8)需要找到[5,6)这组区间。如果是add操作，则需要将[7,8)插入到区间数组的[5,6)后面。
 
