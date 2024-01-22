@@ -52,7 +52,7 @@ class TestTools(unittest.TestCase):
         
         self.assertEqual(Tools.search_overlap(ranges, Range(60, 66)), [(3, True)])
         self.assertEqual(Tools.search_overlap(ranges, Range(61, 66)), [(3, False)])
-        self.assertEqual(Tools.search_overlap(ranges, Range(121, 121)), [(6, False)])
+        self.assertEqual(Tools.search_overlap(ranges, Range(121, 121)), [])
         
 if __name__ == '__main__':
     unittest.main()

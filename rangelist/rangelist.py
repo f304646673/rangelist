@@ -23,8 +23,6 @@ class RangeList(object):
     # @throws ValueError if other is not a list of 2 integers
     def add(self, other):
         other = Range.conv(other)
-        if other.start == other.end:
-            return self
         
         indexes = Tools.search_overlap(self.ranges, other)
         del_start_index = -1
@@ -37,7 +35,7 @@ class RangeList(object):
         if -1 != del_start_index:
             del self.ranges[del_start_index : indexes[-1][0]+1]
             self.ranges.insert(del_start_index, other)
-        else:
+        elif len(indexes) > 0:
             self.ranges.insert(indexes[0][0]+1, other)
         
         return self
@@ -49,8 +47,6 @@ class RangeList(object):
     # @throws ValueError if other is not a list of 2 integers
     def remove(self, other):
         other = Range.conv(other)
-        if other.start == other.end:
-            return self
         
         indexes = Tools.search_overlap(self.ranges, other)
         del_start_index = -1

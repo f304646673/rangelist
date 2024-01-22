@@ -43,6 +43,9 @@ class Tools(object):
     # @return a list of (index, overlap) of the ranges which overlap with the search range
     @staticmethod
     def search_overlap(ranges, search_range):
+        if search_range.start == search_range.end:
+            return []
+        
         start = Tools.search(ranges, search_range.start)
         end = Tools.search(ranges, search_range.end, start[0])
         index_list = [start]
