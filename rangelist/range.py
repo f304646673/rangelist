@@ -53,13 +53,13 @@ class Range(object):
     # @return - a list of Range objects that are the result of removing other from this range
     # @throws TypeError if other is not a Range object or a list of integers
     # @throws ValueError if other is not a list of 2 integers
-    def remove(self, other) -> object:
+    def remove(self, other) -> list:
         other = self.conv(other)
         
         if self.end < other.start or self.start > other.end:
             return [self]
         if self.start >= other.start and self.end <= other.end:
-            return None
+            return []
         if self.start >= other.start and self.end > other.end:
             return [Range(other.end, self.end)]
         if self.start < other.start and self.end <= other.end:

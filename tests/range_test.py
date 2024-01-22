@@ -94,13 +94,13 @@ class TestRange(unittest.TestCase):
             left.remove("a")
         self.assertEqual(str(te.exception), "other must be a Range object or a list of integers")
         
-        # test Range start equal right start, it will return None
-        # left Range: [3, 5) right Range: [3, 5), result is None
+        # test Range start equal right start, it will return []
+        # left Range: [3, 5) right Range: [3, 5), result is []
         start = 3
         end = 5
         left = Range(start, end)
         right = Range(start, end)
-        self.assertEqual(left.remove(right), None)
+        self.assertEqual(left.remove(right), [])
         
         # test Range start equal right end, it will return left Range
         # left Range: [3, 5) right Range: [5, 6), result is [3, 5)
@@ -126,13 +126,13 @@ class TestRange(unittest.TestCase):
         right = Range(end-1, end)
         self.assertEqual(left.remove(right), [Range(start, end-1)])
         
-        # test Range start large than right start, and Range end less than right end, it will return None
-        # left Range: [3, 5) right Range: [2, 6), result is None
+        # test Range start large than right start, and Range end less than right end, it will return []
+        # left Range: [3, 5) right Range: [2, 6), result is []
         start = 3
         end = 5
         left = Range(start, end)
         right = Range(start-1, end+1)
-        self.assertEqual(left.remove(right), None)
+        self.assertEqual(left.remove(right), [])
         
         # test Range start less than right start, and Range end large than right end, it will return a range list
         # left Range: [1, 10) right Range: [3, 5), result is [[1, 3),[5, 10)]
