@@ -28,7 +28,7 @@ class TestTools(unittest.TestCase):
         self.assertEqual(Tools.search(ranges, 41), (2, False))
         
     def test_search_overlap(self):
-        ranges = [Range(1, 5), Range(10, 20), Range(30, 40)]
+        ranges = [Range(1, 5), Range(10, 20), Range(30, 40), Range(50, 60), Range(70, 80), Range(90, 100), Range(110, 120)]
         self.assertEqual(Tools.search_overlap(ranges, Range(0, 5)), [(-1, False), (0, True)])
         self.assertEqual(Tools.search_overlap(ranges, Range(0, 6)), [(-1, False), (0, True)])
         self.assertEqual(Tools.search_overlap(ranges, Range(0, 10)), [(-1, False), (0, True), (1, True)])
@@ -49,6 +49,10 @@ class TestTools(unittest.TestCase):
         
         self.assertEqual(Tools.search_overlap(ranges, Range(21, 29)), [(1, False)])
         self.assertEqual(Tools.search_overlap(ranges, Range(21, 41)), [(1, False), (2, True)])
+        
+        self.assertEqual(Tools.search_overlap(ranges, Range(60, 66)), [(3, True)])
+        self.assertEqual(Tools.search_overlap(ranges, Range(61, 66)), [(3, False)])
+        self.assertEqual(Tools.search_overlap(ranges, Range(121, 121)), [(6, False)])
         
 if __name__ == '__main__':
     unittest.main()

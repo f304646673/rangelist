@@ -45,6 +45,12 @@ class TestRangeList(unittest.TestCase):
         rangelist.add([20, 30])
         self.assertEqual(rangelist.toString(), "[-2, 40)")
         
+        rangelist.add([40, 40])
+        self.assertEqual(rangelist.toString(), "[-2, 40)")
+        
+        rangelist.add([41, 41])
+        self.assertEqual(rangelist.toString(), "[-2, 40)")
+        
     def test_remove(self):
         rangelist = RangeList()
         rangelist.add([1, 5])
